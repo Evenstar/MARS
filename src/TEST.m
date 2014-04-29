@@ -1,0 +1,63 @@
+%% Test build_samples
+I=double(imread('../data/barbara.png'));
+tic
+imgPatch=build_samples(I,25,100,0);
+toc
+imdisp(reshape(imgPatch,[25,25,1,100]))
+
+I=double(imread('../data/bird.jpg'));
+tic
+imgPatch=build_samples(I,50,100,1);
+toc
+imagesc(reshape(imgPatch(:,:,20)/255,[50,50,3]))
+
+%% Learn filters
+I=double(imread('../data/barbara.png'));
+opts.r=8;
+opts.N=5000;
+opts.isColor=false;
+if opts.isColor==true
+    opts.patchSize=[opts.r, opts.r*3];
+else
+    opts.patchSize=[opts.r, opts.r];
+end
+opts.nFilter=opts.r*opts.r;
+opts.lambda=30;
+opts.maxIter=100;
+tic
+imgPatch=build_samples(I,opts.r,opts.N,0);
+toc
+tic 
+[dict,ratio]=train(imgPatch, opts);
+toc
+
+%% Transform
+% DESCRIPTIVE TEXT
+
+dict=sortdict(dict);
+tic
+st=mtfdec2(I/255, dict, 1,'sym',2);
+recImg=mtfrec2(st);
+toc
+psnr(I,recImg)
+
+
+%%
+st=tfdec2(I,dict,'sym',2);
+recImg=tfrec2(st)/16;
+psnr(I,recImg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
