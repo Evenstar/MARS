@@ -28,11 +28,10 @@ for l=L:-1:1
             temp=conv2(temp,a,'valid');
         end
         recImg=recImg+temp(1:imgSize(1),1:imgSize(2));
-    end   
-    recImg=recImg;
+    end     
     if l>1
-        st.coef{l-1}{1}=recImg/r/r;
+        st.coef{l-1}{1}=recImg*f^2;
     end
 end
-recImg=recImg;
+recImg=recImg*f^2;
 end

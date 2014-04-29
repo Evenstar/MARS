@@ -15,7 +15,7 @@ data_matrix=reshape(imgPatch,[m*n,p]);
 %recVec=dict'*H;
 %recVec=recVec.*repmat(norm_data,[size(data_matrix,1),1]);
 ratio=numel(data_matrix)/nnz(H);
-dict=sortdict(dict);
+dict=sortdict(dict)/sqrt(trace(dict'*dict));
 %recImg=reshape(recVec,[m,n,p]);
 end
 
